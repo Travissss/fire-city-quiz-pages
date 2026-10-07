@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>你适合在哪座城市 FIRE</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+      --accent: #1d1d1f;
+    }
+    * { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+      font-size: 17px;
+      line-height: 1.47;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+    }
+    main {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 28px 22px calc(48px + env(safe-area-inset-bottom));
+    }
+    .kicker {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    h1 {
+      margin: 10px 0 0;
+      font-size: 34px;
+      line-height: 1.12;
+      font-weight: 600;
+      letter-spacing: -0.035em;
+    }
+    .lead { margin: 14px 0 0; color: var(--muted); font-size: 17px; line-height: 1.5; }
+    .progress { display: flex; gap: 6px; margin: 8px 0 18px; }
+    .progress i { flex: 1; height: 3px; border-radius: 99px; background: #d2d2d7; }
+    .progress i.on { background: #1d1d1f; }
+    .step { margin: 0 0 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
+    h2 { margin: 0 0 22px; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.03em; }
+    button, textarea { font: inherit; touch-action: manipulation; }
+    button { min-height: 48px; }
+    .option, .primary, .ghost { width: 100%; cursor: pointer; }
+    .option {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      text-align: left;
+      margin: 0 0 10px;
+      padding: 16px 18px;
+      min-height: 56px;
+      border: 0;
+      border-radius: 18px;
+      background: var(--card);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.35;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    }
+    .option:active { transform: scale(0.985); }
+    .mark {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      font-size: 14px;
+      line-height: 28px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .primary, .ghost {
+      border: 0;
+      min-height: 50px;
+      padding: 14px 18px;
+      font-size: 17px;
+      font-weight: 500;
+      border-radius: 980px;
+    }
+    .primary { margin-top: 22px; background: #1d1d1f; color: #f5f5f7; }
+    .primary:active { transform: scale(0.985); }
+    .ghost { margin-top: 6px; background: transparent; color: #6e6e73; min-height: 44px; }
+    .stack { display: grid; gap: 14px; margin-top: 20px; }
+    article {
+      background: var(--card);
+      border: 0;
+      border-radius: 24px;
+      padding: 22px 20px 20px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+    }
+    .role {
+      display: inline-block;
+      margin: 0;
+      padding: 5px 12px;
+      border-radius: 980px;
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+    .role-primary { color: #f5f5f7; background: #1d1d1f; }
+    .role-secondary { color: #1d1d1f; background: #e8e8ed; }
+    .advice { margin: 10px 0 0; font-size: 16px; line-height: 1.55; }
+    .advice b { font-weight: 600; color: #6e6e73; }
+    .city { margin: 14px 0 0; font-size: 32px; line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; }
+    .persona, .meta { margin: 8px 0 0; font-size: 16px; line-height: 1.5; }
+    .meta { color: var(--muted); }
+    .code {
+      margin: 22px 0 0;
+      padding: 28px 12px;
+      border-radius: 24px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-align: center;
+      line-height: 1.25;
+      word-break: break-all;
+      user-select: all;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    }
+    textarea {
+      width: 100%;
+      max-width: 100%;
+      min-height: 148px;
+      margin-top: 18px;
+      padding: 16px;
+      border: 0;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+      font-size: 17px;
+      line-height: 1.5;
+      resize: vertical;
+    }
+    .toast { min-height: 24px; margin: 10px 0 0; text-align: center; color: #1d1d1f; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script src="quiz.js"></script>
+  <script>
+    const app = document.getElementById("app");
+    const answers = [];
+
+    function renderStart() {
+      answers.length = 0;
+      app.innerHTML = `
+        <p class="kicker">${QUIZ.questions.length} 题 · 手机上就能做完</p>
+        <h1>你适合在哪座城市停下来</h1>
+        <p class="lead">${QUIZ.questions.length} 道题都要答。答完复制一行字母，贴到评论区。博主会按你的选择生成城市卡。</p>
+        <button class="primary" id="go">开始</button>
+        <button class="ghost" id="batch">我是作者：从评论生成城市卡</button>`;
+      document.getElementById("go").onclick = () => renderQuestion();
+      document.getElementById("batch").onclick = renderBatch;
+    }
+
+    function renderQuestion() {
+      const index = answers.length;
+      const question = QUIZ.questions[index];
+      const bars = QUIZ.questions.map((_, i) => `<i class="${i <= index ? "on" : ""}"></i>`).join("");
+      app.innerHTML = `
+        <div class="progress">${bars}</div>
+        <p class="step">第 ${index + 1} 题，共 ${QUIZ.questions.length} 题</p>
+        <h2>${question.q}</h2>
+        <div id="options"></div>`;
+      const box = document.getElementById("options");
+      question.options.forEach((option, optionIndex) => {
+        const button = document.createElement("button");
+        button.className = "option";
+        button.innerHTML = `<span class="mark">${optionIndex + 1}</span><span>${option.label}</span>`;
+        button.onclick = () => {
+          answers.push(optionIndex);
+          if (answers.length === QUIZ.questions.length) renderResult();
+          else renderQuestion();
+        };
+        box.appendChild(button);
+      });
+    }
+
+    function renderResult() {
+      const code = QUIZ.encodeAnswers(answers);
+      app.innerHTML = `
+        <p class="kicker">都答完了</p>
+        <h1>贴到评论区</h1>
+        <p class="code" id="answercode"></p>
+        <p class="lead">复制这行选择，贴到评论区。博主会按你的选择生成城市卡，再回复你。</p>
+        <button class="primary" id="copy">复制，去评论区粘贴</button>
+        <div class="toast" id="toast"></div>
+        <button class="ghost" id="again">再测一次</button>`;
+      document.getElementById("answercode").textContent = code;
+      document.getElementById("copy").onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(code);
+          document.getElementById("toast").textContent = "已复制，去评论区粘贴这一行";
+        } catch (error) {
+          document.getElementById("toast").textContent = "复制没成功，请长按上面的字母";
+        }
+      };
+      document.getElementById("again").onclick = renderStart;
+    }
+
+    function ownerCard(item, role, choices) {
+      const city = item.city;
+      const limits = role === "首选" ? { good: 3, care: 2 } : { good: 2, care: 1 };
+      const advice = QUIZ.buildAdvice(item.key, choices, limits);
+      const article = document.createElement("article");
+      article.className = role === "首选" ? "primary-card" : "secondary-card";
+      const roleClass = role === "首选" ? "role-primary" : "role-secondary";
+      article.innerHTML = `
+        <p class="role ${roleClass}">${role}</p>
+        <h2 class="city">${city.name}</h2>
+        <p class="persona">${city.persona}</p>
+        <p class="meta">${city.spend}，一个人，不算房贷。</p>
+        <p class="advice"><b>优点</b></p>
+        <p class="advice"></p>
+        <p class="advice"><b>要注意</b></p>
+        <p class="advice"></p>`;
+      const blocks = article.querySelectorAll(".advice");
+      blocks[1].textContent = advice.good.join("\n");
+      blocks[1].style.whiteSpace = "pre-wrap";
+      blocks[3].textContent = advice.care.join("\n");
+      blocks[3].style.whiteSpace = "pre-wrap";
+      return article;
+    }
+
+    function renderBatch() {
+      app.innerHTML = `
+        <p class="kicker">只生成，不代发</p>
+        <h1>从评论生成城市卡</h1>
+        <p class="lead">一行一条评论。要有 ${QUIZ.questions.length} 个字母。10 个字母的是旧版，对不上。生成后你自己贴回去。</p>
+        <textarea id="raw" placeholder="我觉得 CDCBCCCBACA 哈哈"></textarea>
+        <button class="primary" id="make">生成城市卡</button>
+        <div id="out"></div>
+        <button class="ghost" id="back">返回</button>`;
+      document.getElementById("back").onclick = renderStart;
+      document.getElementById("make").onclick = () => {
+        const cards = QUIZ.cardsFromComments(document.getElementById("raw").value);
+        const out = document.getElementById("out");
+        out.innerHTML = cards.length ? "" : `<p class="step">先贴至少一行评论。</p>`;
+        cards.forEach((card) => {
+          if (card.ok) {
+            const result = QUIZ.score(card.choices);
+            const stack = document.createElement("div");
+            stack.className = "stack";
+            stack.append(
+              ownerCard(result.primary, "首选", card.choices),
+              ownerCard(result.secondary, "次选", card.choices)
+            );
+            out.append(stack);
+          }
+          const copy = document.createElement("button");
+          copy.className = "option";
+          copy.textContent = card.ok ? "复制这条城市卡" : "这行选项码对不上";
+          copy.disabled = !card.ok;
+          copy.onclick = async () => {
+            try {
+              await navigator.clipboard.writeText(card.text);
+              copy.textContent = "已复制，去手动回复";
+            } catch (error) {
+              copy.textContent = "请手动复制上面的文字";
+            }
+          };
+          out.append(copy);
+        });
+      };
+    }
+
+    renderStart();
+  </script>
+</body>
+</html>
